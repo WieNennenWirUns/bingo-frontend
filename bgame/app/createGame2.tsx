@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { KeyboardAvoidingView } from 'react-native';
+
 
 export default function CreateGame2() {
     const { gameName, boardSize } = useLocalSearchParams();

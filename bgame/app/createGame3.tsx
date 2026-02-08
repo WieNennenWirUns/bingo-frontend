@@ -37,7 +37,16 @@ export default function CreateGame3() {
             fields: parsedFields,
             selectedFriends
         });
-        router.push('/bingoBoard');
+        router.push({
+            pathname: '/bingoBoard',
+            params: {
+                gameName: gameName as string,
+                boardSize: boardSize as string,
+                fields: JSON.stringify(parsedFields),
+                players: JSON.stringify(selectedFriends),
+            },
+        });
+
     };
 
     const renderFriend = ({ item }: { item: { id: string; name: string; avatar: string } }) => {
@@ -53,7 +62,7 @@ export default function CreateGame3() {
                     <Text className="font-semibold text-lg mb-1">{item.name}</Text>
                 </View>
 
-                {/* Eigene Checkbox */}
+                {/* Eigene Checkbox 222*/}
                 <View className={`w-6 h-6 border-2 rounded-md items-center justify-center ${
                     isSelected
                         ? 'bg-green-500 border-green-500'
