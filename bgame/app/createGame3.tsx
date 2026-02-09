@@ -86,16 +86,15 @@ export default function CreateGame3() {
                 </View>
 
                 {/* Tab-Buttons - Invite Members aktiv */}
-                <View className="flex-row mb-8">
-                    <TouchableOpacity className="px-6 py-3 mr-1">
-                        <Text className="text-blue-500 font-semibold">General Setup</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 mr-1">
-                        <Text className="text-blue-500 font-semibold">Setup Fields</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 bg-blue-500 rounded-t-xl">
-                        <Text className="text-white font-semibold">Invite Members</Text>
-                    </TouchableOpacity>
+                <View className="flex-row items-center justify-between w-full px-6 my-4">
+
+                    <View className="w-8 h-8 rounded-full bg-green-300 border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-2" />
+
+                    <View className="w-8 h-8 rounded-full bg-green-300 border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-0" />
+
+                    <View className="w-10 h-10 rounded-full bg-black border border-black" />
                 </View>
             </View>
 

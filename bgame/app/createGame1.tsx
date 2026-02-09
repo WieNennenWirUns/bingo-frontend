@@ -40,6 +40,7 @@ export default function CreateGame1() {
     };
 
     return (
+
         <SafeAreaView className="flex-1 bg-white">
             <ScrollView
                 className="flex-1"
@@ -55,17 +56,16 @@ export default function CreateGame1() {
                 </View>
 
                 {/* Tab-Buttons */}
-                <View className="flex-row mb-8">
-                    <TouchableOpacity className="px-6 py-3 bg-blue-500 rounded-t-xl mr-1">
-                        <Text className="text-white font-semibold">General Setup</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 border border-gray-300 rounded-t-xl mr-1 opacity-50">
-                        <Text className="text-gray-500">Setup Fields</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 border border-gray-300 rounded-t-xl opacity-50">
-                        <Text className="text-gray-500">Invite Members</Text>
-                    </TouchableOpacity>
+                <View className="flex-row items-center justify-between w-full px-6 my-4">
+                <View className="w-10 h-10 rounded-full bg-black border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-0" />
+
+                    <View className="w-8 h-8 rounded-full bg-gray-300 border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-2" />
+
+                    <View className="w-8 h-8 rounded-full bg-gray-300 border border-black" />
                 </View>
+
 
                 {/* Game Name Input */}
                 <View className="mb-8">
