@@ -13,6 +13,9 @@ module.exports = {
         },
         red: {
           100: '#ff8787'
+        },
+        blue: {
+          100: '#72c6ed'
         }
       },
       fontFamily: {
