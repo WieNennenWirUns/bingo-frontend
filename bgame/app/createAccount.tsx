@@ -6,19 +6,26 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
-    ScrollView,
 } from 'react-native';
 import { router } from 'expo-router';
+import { getIP } from '@/app/_layout';
 
 export default function CreateAccountScreen() {
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [confirmEmail, setConfirmEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleStart = () => {
-        // Hier würdest du normalerweise Account erstellen usw.
-        // Wenn alles passt → zum Home-Bereich navigieren
+    const handleStart = async () => {
+        const response = await fetch('http://' + getIP() + ':3000/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                username,
+                email,
+                password,
+            }),
+        });
         router.replace('/home');
     };
 
@@ -42,7 +49,19 @@ export default function CreateAccountScreen() {
                     Create An Account
                 </Text>
 
-                {/* Enter Email */}
+                {/* Username */}
+                <View className="w-full mb-3">
+                    <Text className="text-base mb-1">Enter Username</Text>
+                    <TextInput
+                        className="w-full p-3 border border-gray-300 rounded-xl bg-white"
+                        placeholder="username"
+                        value={username}
+                        onChangeText={setUsername}
+                        autoCapitalize="none"
+                    />
+                </View>
+
+                {/* Email */}
                 <View className="w-full mb-3">
                     <Text className="text-base mb-1">Enter Email</Text>
                     <TextInput
@@ -55,25 +74,12 @@ export default function CreateAccountScreen() {
                     />
                 </View>
 
-                {/* Confirm Email */}
-                <View className="w-full mb-3">
-                    <Text className="text-base mb-1">Confirm Email</Text>
-                    <TextInput
-                        className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                        placeholder="email@domain.com"
-                        value={confirmEmail}
-                        onChangeText={setConfirmEmail}
-                        keyboardType="email-address"
-                        autoCapitalize="none"
-                    />
-                </View>
-
-                {/* Add Password */}
+                {/* Password */}
                 <View className="w-full mb-3">
                     <Text className="text-base mb-1">Add Password</Text>
                     <TextInput
                         className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                        placeholder="Password"
+                        placeholder="password"
                         value={password}
                         onChangeText={setPassword}
                         secureTextEntry
@@ -85,14 +91,14 @@ export default function CreateAccountScreen() {
                     <Text className="text-base mb-1">Confirm Password</Text>
                     <TextInput
                         className="w-full p-3 border border-gray-300 rounded-xl bg-white"
-                        placeholder="Password"
+                        placeholder="password"
                         value={confirmPassword}
                         onChangeText={setConfirmPassword}
                         secureTextEntry
                     />
                 </View>
 
-                {/* Grüner Start-Button */}
+                {/* Start Button */}
                 <TouchableOpacity
                     className="w-full bg-green-400 p-4 rounded-xl mb-10"
                     onPress={handleStart}
@@ -102,14 +108,13 @@ export default function CreateAccountScreen() {
                     </Text>
                 </TouchableOpacity>
 
-                {/* Text + Pfeil zum Log In */}
+                {/* Log-In Hinweis */}
                 <View className="items-center mb-3">
                     <Text className="text-base mb-1">You have an account?</Text>
-                    {/* Optional: kleiner Pfeil nach unten als Text */}
                     <Text className="text-2xl">↓</Text>
                 </View>
 
-                {/* Grüner Log-In-Button unten */}
+                {/* Log-In Button */}
                 <TouchableOpacity
                     className="w-full bg-gray-400 p-4 rounded-xl"
                     onPress={handleGoToLogin}

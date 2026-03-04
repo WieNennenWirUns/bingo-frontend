@@ -63,7 +63,7 @@ export default function LoginScreen() {
             className="flex-1"
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-            <View className="flex-1 justify-center items-center p-8">
+            <View className="flex-1 justify-center items-center p-8 bg-white">
                 {/* App-Name */}
                 <Text className="text-4xl font-bold text-center mb-10">
                     Bingo Bear
