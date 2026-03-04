@@ -118,7 +118,7 @@ export default function FriendsList() {
                     />
                 )}
 
-                {/* Bottom Add Friends Bar */}
+                {/* Bottom Add Friends Bar*/}
                 <View className="py-4">
 
                     <View className="bg-white border rounded-2xl py-2 px-4 items-center">
