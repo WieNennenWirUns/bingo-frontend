@@ -33,7 +33,7 @@ export default function BingoBoard() {
         <SafeAreaView className="flex-1 bg-white px-5">
 
             {/* Header */}
-            <View className="flex-row items-center mb-4">
+            <View className="flex-row items-center mb-4exp">
                 <TouchableOpacity onPress={() => router.replace('/home')}>
                     <Text className="text-6xl mr-4">←</Text>
                 </TouchableOpacity>
