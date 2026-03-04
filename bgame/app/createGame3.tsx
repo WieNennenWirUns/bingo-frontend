@@ -82,7 +82,7 @@ export default function CreateGame3() {
             <View className="px-5 pt-5 pb-4">
                 <View className="mb-6">
                     <Text className="text-center text-3xl font-bold mb-2">Create Game</Text>
-                    <View className="h-px bg-gray-300 mx-0" />
+                    <View className="h-px bg-black mx-0" />
                 </View>
 
                 {/* Tab-Buttons - Invite Members aktiv */}
