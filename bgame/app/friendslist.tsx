@@ -1,5 +1,5 @@
 // app/(app)/friendsList.tsx
-import {Image, ImageSourcePropType} from 'react-native';
+
 import React, { useState } from 'react';
 import {
     View,
@@ -16,13 +16,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 type Friend = {
     id: string;
     name: string;
-    image: ImageSourcePropType;
 };
 
 export default function FriendsList() {
     const [friends, setFriends] = useState<Friend[]>([
-        { id: '1', name: 'Bert', image: require('bgame/assets/images/ghost profile .jpeg')},
-        { id: '2', name: 'Erni', image: require('bgame/assets/images/Peeace sign profile.jpeg')}
+        { id: '1', name: 'Bert' },
+        { id: '2', name: 'Erni' },
     ]);
 
     const [friendcodeOpen, setFriendcodeOpen] = useState(false);
@@ -46,40 +45,26 @@ export default function FriendsList() {
     };
 
     const handleDeleteFriend = (id: string) => {
-        Alert.alert(
-            'Delete Friend',
-            'Are you sure?',
-            [
-                { text: 'No', style: 'cancel' },
-                {
-                    text: 'Yes',
-                    style: 'destructive',
-                    onPress: () => {
-                        setFriends(prev => prev.filter(f => f.id !== id));
-                    },
+        Alert.alert('Delete Friend', 'Are you sure?', [
+            { text: 'No', style: 'cancel' },
+            {
+                text: 'Yes',
+                style: 'destructive',
+                onPress: () => {
+                    setFriends(prev => prev.filter(f => f.id !== id));
                 },
-            ]
-        );
+            },
+        ]);
     };
 
     const renderFriend = ({ item }: { item: Friend }) => (
         <View>
             <View className="flex-row items-center py-4">
-
-                {/* Profile Picture */}
-                <Image
-                    source={
-                        typeof item.image === 'string'
-                            ? { uri: item.image }
-                            : item.image
-                    }
-                    className="w-10 h-10 rounded-full mr-4"
-                />
+                {/* Placeholder Circle */}
+                <View className="w-10 h-10 rounded-full bg-black mr-4" />
 
                 {/* Name */}
-                <Text className="flex-1 text-xl">
-                    {item.name}
-                </Text>
+                <Text className="flex-1 text-xl">{item.name}</Text>
 
                 {/* Delete */}
                 <TouchableOpacity onPress={() => handleDeleteFriend(item.id)}>
@@ -94,12 +79,10 @@ export default function FriendsList() {
 
     return (
         <SafeAreaView className="flex-1 bg-white px-5">
-
             <KeyboardAvoidingView
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 className="flex-1"
             >
-
                 {/* Header */}
                 <View className="pt-8 mb-6">
                     <Text className="text-3xl font-bold text-center mb-3">
@@ -126,23 +109,16 @@ export default function FriendsList() {
                     />
                 )}
 
-                {/* Bottom Add Friends Bar*/}
+                {/* Bottom Add Friends Bar */}
                 <View className="py-4">
-
                     <View className="bg-white border rounded-2xl py-2 px-4 items-center">
-
                         <TouchableOpacity onPress={toggleFriendcode}>
-                            <Text className="font-semibold">
-                                Add Friends
-                            </Text>
+                            <Text className="font-semibold">Add Friends</Text>
                         </TouchableOpacity>
 
                         {friendcodeOpen && (
                             <View className="absolute bottom-14 left-0 right-0 bg-white rounded-2xl px-4 py-3 shadow-lg border">
-
-                                <Text className="text-sm mb-1">
-                                    only XXXX-XXXX
-                                </Text>
+                                <Text className="text-sm mb-1">only XXXX-XXXX</Text>
 
                                 <TextInput
                                     className="w-full mt-1 mb-3 p-3 bg-white border border-gray-400 rounded-xl"
@@ -159,13 +135,10 @@ export default function FriendsList() {
                                         Add
                                     </Text>
                                 </TouchableOpacity>
-
                             </View>
                         )}
-
                     </View>
                 </View>
-
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
