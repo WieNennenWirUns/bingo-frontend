@@ -1,5 +1,5 @@
 // app/(app)/friendsList.tsx
-
+import {Image, ImageSourcePropType} from 'react-native';
 import React, { useState } from 'react';
 import {
     View,
@@ -16,13 +16,13 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 type Friend = {
     id: string;
     name: string;
-    image: require();
+    image: ImageSourcePropType;
 };
 
 export default function FriendsList() {
     const [friends, setFriends] = useState<Friend[]>([
         { id: '1', name: 'Bert', image: require('bgame/assets/images/ghost profile .jpeg')},
-        { id: '2', name: 'Erni', 'bgame/assets/images/Peeace sign profile.jpeg' }
+        { id: '2', name: 'Erni', image: require('bgame/assets/images/Peeace sign profile.jpeg')}
     ]);
 
     const [friendcodeOpen, setFriendcodeOpen] = useState(false);
@@ -66,8 +66,15 @@ export default function FriendsList() {
         <View>
             <View className="flex-row items-center py-4">
 
-                {/* Placeholder Circle */}
-                  //<View className="w-10 h-10 rounded-full bg-black mr-4" />
+                {/* Profile Picture */}
+                <Image
+                    source={
+                        typeof item.image === 'string'
+                            ? { uri: item.image }
+                            : item.image
+                    }
+                    className="w-10 h-10 rounded-full mr-4"
+                />
 
                 {/* Name */}
                 <Text className="flex-1 text-xl">
