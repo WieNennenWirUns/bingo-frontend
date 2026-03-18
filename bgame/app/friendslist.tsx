@@ -22,7 +22,7 @@ type Friend = {
 export default function FriendsList() {
     const [friends, setFriends] = useState<Friend[]>([
         { id: '1', name: 'Bert', image: require('bgame/assets/images/ghost profile .jpeg')},
-        { id: '2', name: 'Erni', 'bgame/assets/images/Peeace sign profile.jpeg' }
+        // { id: '2', name: 'Erni', 'bgame/assets/images/Peeace sign profile.jpeg' }
     ]);
 
     const [friendcodeOpen, setFriendcodeOpen] = useState(false);
