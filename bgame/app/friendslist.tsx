@@ -16,11 +16,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 type Friend = {
     id: string;
     name: string;
+    image: require();
 };
 
 export default function FriendsList() {
     const [friends, setFriends] = useState<Friend[]>([
-        { id: '1', name: 'Bert' },
+        { id: '1', name: 'Bert', image: require('bgame/assets/images/ghost profile .jpeg')},
         { id: '2', name: 'Erni' },
     ]);
 
@@ -66,7 +67,7 @@ export default function FriendsList() {
             <View className="flex-row items-center py-4">
 
                 {/* Placeholder Circle */}
-                <View className="w-10 h-10 rounded-full bg-black mr-4" />
+                  //<View className="w-10 h-10 rounded-full bg-black mr-4" />
 
                 {/* Name */}
                 <Text className="flex-1 text-xl">
