@@ -40,6 +40,7 @@ export default function CreateGame1() {
     };
 
     return (
+
         <SafeAreaView className="flex-1 bg-white">
             <ScrollView
                 className="flex-1"
@@ -55,17 +56,16 @@ export default function CreateGame1() {
                 </View>
 
                 {/* Tab-Buttons */}
-                <View className="flex-row mb-8">
-                    <TouchableOpacity className="px-6 py-3 bg-blue-500 rounded-t-xl mr-1">
-                        <Text className="text-white font-semibold">General Setup</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 border border-gray-300 rounded-t-xl mr-1 opacity-50">
-                        <Text className="text-gray-500">Setup Fields</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 border border-gray-300 rounded-t-xl opacity-50">
-                        <Text className="text-gray-500">Invite Members</Text>
-                    </TouchableOpacity>
+                <View className="flex-row items-center justify-between w-full px-6 my-4">
+                    <View className="w-10 h-10 rounded-full bg-black border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-0" />
+
+                    <View className="w-8 h-8 rounded-full bg-gray-300 border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-2" />
+
+                    <View className="w-8 h-8 rounded-full bg-gray-300 border border-black" />
                 </View>
+
 
                 {/* Game Name Input */}
                 <View className="mb-8">
@@ -80,22 +80,55 @@ export default function CreateGame1() {
 
                 {/* Board Size Selection: Ich hab keinen Bock mehr mache ich morgen */}
                 <View className="mb-8">
-                    <Text className="text-lg font-semibold mb-3">Select Board Size</Text>
+
                     <View className="w-full p-6 border border-black rounded-xl bg-white">
-                        <View className="flex-row flex-wrap justify-center gap-2">
-                            {boardSizes.map((size) => (
+                        <Text className="text-lg font-semibold mb-4 ">
+                            Select Board Size:
+                        </Text>
+                        {/* Row 1 — 3 equal boxes */}
+                        <View className="flex-row mb-3 gap-2">
+                            {(['3x3', '4x4', '5x5'] as const).map((size) => (
                                 <TouchableOpacity
                                     key={size}
-                                    className={`w-16 h-16 border-2 rounded-lg items-center justify-center ${
+                                    className={`flex-1 h-16 border-2 rounded-lg items-center justify-center ${
                                         selectedSize === size
-                                            ? 'bg-blue-500 border-blue-500'
+                                            ? 'bg-blue-100 border-blue-100'
                                             : 'bg-white border-gray-300'
                                     }`}
                                     onPress={() => selectBoardSize(size)}
                                 >
-                                    <Text className={`font-bold ${
-                                        selectedSize === size ? 'text-white text-lg' : 'text-gray-800'
-                                    }`}>
+                                    <Text
+                                        className={`font-bold ${
+                                            selectedSize === size
+                                                ? 'text-white text-lg'
+                                                : 'text-gray-800'
+                                        }`}
+                                    >
+                                        {size}
+                                    </Text>
+                                </TouchableOpacity>
+                            ))}
+                        </View>
+
+                        {/* Row 2 — 2 wider boxes */}
+                        <View className="flex-row gap-2">
+                            {(['6x6', '7x7'] as const).map((size) => (
+                                <TouchableOpacity
+                                    key={size}
+                                    className={`flex-1 h-16 border-2 rounded-lg items-center justify-center ${
+                                        selectedSize === size
+                                            ? 'bg-blue-100 border-blue-100'
+                                            : 'bg-white border-gray-300'
+                                    }`}
+                                    onPress={() => selectBoardSize(size)}
+                                >
+                                    <Text
+                                        className={`font-bold ${
+                                            selectedSize === size
+                                                ? 'text-white text-lg'
+                                                : 'text-gray-800'
+                                        }`}
+                                    >
                                         {size}
                                     </Text>
                                 </TouchableOpacity>
@@ -115,4 +148,3 @@ export default function CreateGame1() {
         </SafeAreaView>
     );
 }
-

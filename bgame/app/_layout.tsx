@@ -24,5 +24,5 @@ export default function RootLayout() {
 }
 
 export function getIP() {
-    return "10.0.0.12"; //hier muss die IP Adresse abgeändert werden -->IPv4 Adresse siehe: ipconfig (in Terminal schreiben)
+    return "192.168.178.77"; //hier muss die IP Adresse abgeändert werden -->IPv4 Adresse siehe: ipconfig (in Terminal schreiben)
 }

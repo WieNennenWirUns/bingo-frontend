@@ -37,7 +37,16 @@ export default function CreateGame3() {
             fields: parsedFields,
             selectedFriends
         });
-        router.push('/bingoBoard');
+        router.push({
+            pathname: '/bingoBoard',
+            params: {
+                gameName: gameName as string,
+                boardSize: boardSize as string,
+                fields: JSON.stringify(parsedFields),
+                players: JSON.stringify(selectedFriends),
+            },
+        });
+
     };
 
     const renderFriend = ({ item }: { item: { id: string; name: string; avatar: string } }) => {
@@ -53,7 +62,7 @@ export default function CreateGame3() {
                     <Text className="font-semibold text-lg mb-1">{item.name}</Text>
                 </View>
 
-                {/* Eigene Checkbox */}
+                {/* Eigene Checkbox 222*/}
                 <View className={`w-6 h-6 border-2 rounded-md items-center justify-center ${
                     isSelected
                         ? 'bg-green-500 border-green-500'
@@ -73,20 +82,19 @@ export default function CreateGame3() {
             <View className="px-5 pt-5 pb-4">
                 <View className="mb-6">
                     <Text className="text-center text-3xl font-bold mb-2">Create Game</Text>
-                    <View className="h-px bg-gray-300 mx-0" />
+                    <View className="h-px bg-black mx-0" />
                 </View>
 
                 {/* Tab-Buttons - Invite Members aktiv */}
-                <View className="flex-row mb-8">
-                    <TouchableOpacity className="px-6 py-3 mr-1">
-                        <Text className="text-blue-500 font-semibold">General Setup</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 mr-1">
-                        <Text className="text-blue-500 font-semibold">Setup Fields</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity className="px-6 py-3 bg-blue-500 rounded-t-xl">
-                        <Text className="text-white font-semibold">Invite Members</Text>
-                    </TouchableOpacity>
+                <View className="flex-row items-center justify-between w-full px-6 my-4">
+
+                    <View className="w-8 h-8 rounded-full bg-green-300 border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-2" />
+
+                    <View className="w-8 h-8 rounded-full bg-green-300 border border-black" />
+                    <View className="w-28 h-px bg-gray-300 mx-0" />
+
+                    <View className="w-10 h-10 rounded-full bg-black border border-black" />
                 </View>
             </View>
 
