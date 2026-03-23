@@ -11,20 +11,17 @@ type Board = {
     name: string;
 };
 
-// Fetch boards from backend when component mounts
     export default function HomeScreen() {
-    // Friendcode states
+
     const [friendcodeOpen, setFriendcodeOpen] = useState(false);
     const [friendcode, setFriendcode] = useState('');
 
     const toggleFriendcode = () => {
         setFriendcodeOpen(prev => !prev);
     };
-    // Boards state
+
     const [boards, setBoards] = useState<Board[]>([]);
 
-
-    // Fetch boards on mount
         useEffect(() => {
             const fetchBoards = async () => {
                 try {
@@ -49,7 +46,6 @@ type Board = {
             fetchBoards();
         }, []);
 
-    // Add friend handler
     const handleAddFriend = async () => {
         const upperFriendcode = friendcode.trim().toUpperCase();
         try {
@@ -81,7 +77,6 @@ type Board = {
         }
     };
 
-    // Navigation handlers
     const handleGoToCreateGame = () => router.push('/createGame1');
     const handleGoToProfile = () => router.push('/profile');
 
@@ -92,9 +87,9 @@ type Board = {
                     router.push({
                         pathname: '/bingoBoard',
                         params: {
-                            gameId: item.id,        // real ID
-                            gameName: item.name,    // display name
-                            fields: JSON.stringify([]), // just an empty array
+                            gameId: item.id,
+                            gameName: item.name,
+                            fields: JSON.stringify([]),
                         },
                     })
                 }
@@ -126,7 +121,6 @@ type Board = {
                     </View>
                 ) : (
                     <FlatList
-                        //hier fehlt noch die beschreibung der Boards
                         data={boards}
                         keyExtractor={(item) => item.id}
                         renderItem={renderBoard}
@@ -144,14 +138,12 @@ type Board = {
 
                 <View className="flex-1 mx-3 bg-white border rounded-2xl py-2 px-4 items-center h-10 z-50">
                     <TouchableOpacity
-                        //hier muss auch noch was passieren, damit der gesamte Button funktioniert und nicht nur die Schrift, habe darauf jetzt aber keinen Bock mehr
                         onPress={toggleFriendcode}
                     >
                         <Text className="font-semibold text-center">Add Friends</Text>
                     </TouchableOpacity>
 
                     {friendcodeOpen && (
-                        //hier muss noch was g,acht werden, damit die box nicht von der Tastatur verdeckt wird
                         <View className="absolute bottom-12 left-0 right-0 bg-white rounded-2xl px-4 py-3 shadow-lg z-50 border">
                             <Text className="text-sm mb-1">nur XXX-XXX (Beispiel)</Text>
                             <TextInput

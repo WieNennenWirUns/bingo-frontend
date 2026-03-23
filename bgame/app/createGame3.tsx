@@ -17,7 +17,6 @@ export default function CreateGame3() {
     const { gameName, boardSize, fields } = useLocalSearchParams();
     const parsedFields = JSON.parse(fields as string);
 
-    // Platzhalter-Freunde (später aus DB)
     const [friends] = useState([
         { id: '1', name: 'Bert', avatar: '🟠' },
         { id: '2', name: 'Erni', avatar: '⚫' },
@@ -36,14 +35,12 @@ export default function CreateGame3() {
 
     const handleStartGame = async () => {
         try {
-            // Get stored token
             const token = await AsyncStorage.getItem('access_token');
             if (!token) {
                 Alert.alert('Fehler', 'Nicht eingeloggt.');
                 return;
             }
 
-            // Handle array case from useLocalSearchParams
             const gameNameStr = Array.isArray(gameName) ? gameName[0] : gameName;
             const boardSizeStr = Array.isArray(boardSize) ? boardSize[0] : boardSize;
 
@@ -52,14 +49,12 @@ export default function CreateGame3() {
                 return;
             }
 
-            // Extract numeric board size (e.g., "5x5" → 5)
             const sizeNumber = Number(boardSizeStr.split('x')[0]);
             if (isNaN(sizeNumber) || sizeNumber < 3 || sizeNumber > 7) {
                 Alert.alert('Fehler', 'Ungültige Boardgröße (3–7)');
                 return;
             }
 
-            // Send request to backend
             const response = await fetch(`http://${getIP()}:3000/board/create`, {
                 method: 'POST',
                 headers: {
@@ -84,7 +79,6 @@ export default function CreateGame3() {
             const data = await response.json();
             console.log('✅ Game created:', data);
 
-            // Navigate to bingoBoard with necessary params
             router.push({
                 pathname: '/bingoBoard',
                 params: {
@@ -92,7 +86,7 @@ export default function CreateGame3() {
                     boardSize: boardSizeStr,
                     fields: JSON.stringify(parsedFields),
                     players: JSON.stringify(selectedFriends),
-                    gameId: data.id, // if backend returns it
+                    gameId: data.id,
                 },
             });
 

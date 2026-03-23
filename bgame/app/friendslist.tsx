@@ -35,7 +35,7 @@ export default function FriendsList() {
         const upperFriendcode = friendcode.trim().toUpperCase();
         console.log(upperFriendcode);
         try {
-            // 1. Token aus Storage holen
+
             const token = await AsyncStorage.getItem('access_token');
             if (!token) {
                 console.log('No token found');
@@ -199,7 +199,7 @@ export default function FriendsList() {
                 },
                 body: JSON.stringify({
                     requestId: requestId,
-                    accept: true  // Accept!
+                    accept: true
                 }),
             });
 
@@ -207,7 +207,7 @@ export default function FriendsList() {
                 throw new Error(`HTTP ${response.status}`);
             }
 
-            loadPendingRequests(); // Neu laden
+            loadPendingRequests();
 
         } catch (error) {
             console.error('Accept error:', error);
@@ -231,7 +231,7 @@ export default function FriendsList() {
                 },
                 body: JSON.stringify({
                     requestId: requestId,
-                    accept: false  // Reject!
+                    accept: false
                 }),
             });
 
@@ -239,7 +239,7 @@ export default function FriendsList() {
                 throw new Error(`HTTP ${response.status}`);
             }
 
-            loadPendingRequests(); // Neu laden
+            loadPendingRequests();
 
         } catch (error) {
             console.error('Reject error:', error);
