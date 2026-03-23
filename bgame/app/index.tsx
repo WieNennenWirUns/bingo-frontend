@@ -44,7 +44,6 @@ export default function LoginScreen() {
             await AsyncStorage.setItem('access_token', data.access_token);
             await AsyncStorage.setItem('refresh_token', data.refresh_token);
 
-            // Jetzt als eingeloggt behandeln → z.B. zu /(app) navigieren
             router.replace('/home');
         } catch (err) {
             console.error(err);
@@ -60,7 +59,7 @@ export default function LoginScreen() {
 
     return (
         <KeyboardAvoidingView
-            className="flex-1"
+            className="flex-1 bg-white"
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
             <View className="flex-1 justify-center items-center p-8">

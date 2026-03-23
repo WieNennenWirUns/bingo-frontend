@@ -6,9 +6,10 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
-    ScrollView,
+    ScrollView, Alert,
 } from 'react-native';
 import { router } from 'expo-router';
+import {getIP} from "@/app/_layout";
 
 export default function CreateAccountScreen() {
     const [email, setEmail] = useState('');
@@ -16,10 +17,51 @@ export default function CreateAccountScreen() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const handleStart = () => {
-        // Hier würdest du normalerweise Account erstellen usw.
-        // Wenn alles passt → zum Home-Bereich navigieren
-        router.replace('/home');
+    const handleStart = async () => {
+        // Basic Validation
+        if (email !== confirmEmail) {
+            alert("Emails do not match");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters");
+            return;
+        }
+
+        try {
+            const response = await fetch('http://'+getIP()+':3000/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    username: email,
+                    email: email,
+                    password: password,
+                }),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Registration failed');
+            }
+
+            router.replace('/');
+            Alert.alert('Successfully registered', 'Please login now',
+                [{ text: 'OK' }]
+            );
+
+        } catch (error) {
+            console.error(error);
+            alert(error.message);
+        }
     };
 
     const handleGoToLogin = () => {

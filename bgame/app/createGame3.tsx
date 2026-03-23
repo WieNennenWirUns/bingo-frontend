@@ -1,5 +1,8 @@
 // app/(app)/createGame3.tsx
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getIP } from "@/app/_layout";
+import { Alert } from "react-native";
 import {
     View,
     Text,
@@ -30,23 +33,73 @@ export default function CreateGame3() {
         );
     };
 
-    const handleStartGame = () => {
-        console.log('Game starten:', {
-            gameName,
-            boardSize,
-            fields: parsedFields,
-            selectedFriends
-        });
-        router.push({
-            pathname: '/bingoBoard',
-            params: {
-                gameName: gameName as string,
-                boardSize: boardSize as string,
-                fields: JSON.stringify(parsedFields),
-                players: JSON.stringify(selectedFriends),
-            },
-        });
 
+    const handleStartGame = async () => {
+        try {
+            // Get stored token
+            const token = await AsyncStorage.getItem('access_token');
+            if (!token) {
+                Alert.alert('Fehler', 'Nicht eingeloggt.');
+                return;
+            }
+
+            // Handle array case from useLocalSearchParams
+            const gameNameStr = Array.isArray(gameName) ? gameName[0] : gameName;
+            const boardSizeStr = Array.isArray(boardSize) ? boardSize[0] : boardSize;
+
+            if (!gameNameStr || !boardSizeStr) {
+                Alert.alert('Fehler', 'GameName oder BoardSize fehlt.');
+                return;
+            }
+
+            // Extract numeric board size (e.g., "5x5" → 5)
+            const sizeNumber = Number(boardSizeStr.split('x')[0]);
+            if (isNaN(sizeNumber) || sizeNumber < 3 || sizeNumber > 7) {
+                Alert.alert('Fehler', 'Ungültige Boardgröße (3–7)');
+                return;
+            }
+
+            // Send request to backend
+            const response = await fetch(`http://${getIP()}:3000/board/create`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    name: gameNameStr,
+                    size: sizeNumber,
+                    fields: parsedFields,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.log('❌ STATUS:', response.status);
+                console.log('❌ ERROR:', errorText);
+                Alert.alert('Fehler', errorText);
+                return;
+            }
+
+            const data = await response.json();
+            console.log('✅ Game created:', data);
+
+            // Navigate to bingoBoard with necessary params
+            router.push({
+                pathname: '/bingoBoard',
+                params: {
+                    gameName: gameNameStr,
+                    boardSize: boardSizeStr,
+                    fields: JSON.stringify(parsedFields),
+                    players: JSON.stringify(selectedFriends),
+                    gameId: data.id, // if backend returns it
+                },
+            });
+
+        } catch (err) {
+            console.error(err);
+            Alert.alert('Fehler', 'Server nicht erreichbar.');
+        }
     };
 
     const renderFriend = ({ item }: { item: { id: string; name: string; avatar: string } }) => {

@@ -4,6 +4,7 @@ import { useFonts, Caveat_400Regular, Caveat_700Bold } from '@expo-google-fonts/
 import { useEffect} from "react";
 
 export default function RootLayout() {
+
     const [fontsLoaded, error] = useFonts({
         "Caveat-normal": Caveat_400Regular,
         "Caveat-bold": Caveat_700Bold,
@@ -24,5 +25,5 @@ export default function RootLayout() {
 }
 
 export function getIP() {
-    return "192.168.95.45"; //hier muss die IP Adresse abgeändert werden -->IPv4 Adresse siehe: ipconfig(in Terminal schreiben)
+    return "192.168.94.45"; //hier muss die IP Adresse abgeändert werden -->IPv4 Adresse siehe: ipconfig(in Terminal schreiben)
 }

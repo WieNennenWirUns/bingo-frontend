@@ -1,5 +1,5 @@
 // app/(app)/profile.tsx
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import {getIP} from "@/app/_layout";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function ProfileScreen() {
     const [isEditing, setIsEditing] = useState(false);
@@ -18,13 +20,46 @@ export default function ProfileScreen() {
     const [displayName, setDisplayName] = useState('KenDerDummy');
     const [email, setEmail] = useState('kenderdummy@test.com');
 
+    const getEmailFromWhoami = async () => {
+        try {
+            const token = await AsyncStorage.getItem('access_token');
+            if (!token) return;
+
+            const response = await fetch(`http://${getIP()}:3000/auth/me`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            const userEmail = data.email; // z.B. "user4@test.com"
+
+            if (userEmail) {
+                const username = userEmail.split('@')[0]; // "user4"
+                setDisplayName(username);
+                setEmail(userEmail);
+            }
+        } catch (error) {
+            console.error('whoami error:', error);
+        }
+    };
+
+    useEffect(() => {
+        getEmailFromWhoami();
+    }, []);
+
     const handleLogout = () => {
-        // Tokens löschen + zurück zum Login (KEIN Zurück-Button)
         router.replace('/');
     };
 
     const handleViewFriends = () => {
-        router.push('/friendslist'); // zu FriendsList navigieren
+        router.push('/friendslist');
     };
 
     const handleEditProfile = () => {
@@ -33,7 +68,6 @@ export default function ProfileScreen() {
 
     const handleSaveProfile = () => {
         setIsEditing(false);
-        // Hier später API-Call zum Speichern
     };
 
     return (
@@ -75,9 +109,7 @@ export default function ProfileScreen() {
                         ) : (
                             <View className="flex-row items-center justify-between">
                                 <Text className="text-xl">{displayName}</Text>
-                                <TouchableOpacity onPress={() => setIsEditingDisplayName(true)}>
-                                    <Text className="text-blue-500 font-semibold">Edit</Text>
-                                </TouchableOpacity>
+
                             </View>
                         )}
                     </View>
@@ -104,9 +136,7 @@ export default function ProfileScreen() {
                         ) : (
                             <View className="flex-row items-center justify-between">
                                 <Text className="text-xl">{email}</Text>
-                                <TouchableOpacity onPress={() => setIsEditingEmail(true)}>
-                                    <Text className="text-blue-500 font-semibold">Edit</Text>
-                                </TouchableOpacity>
+
                             </View>
                         )}
                     </View>
@@ -127,25 +157,25 @@ export default function ProfileScreen() {
 
                     <View className="h-px bg-gray-400 mx-0 mb-3" />
 
-                    {/* Change Appearance */}
+                    {/* Change Appearance
                     <TouchableOpacity className="mb-3 p-4 border border-gray-400 rounded-xl bg-gray-50 self-start min-w-[270px]">
                         <Text className="text-xl text-center font-semibold">Change Appearance</Text>
                     </TouchableOpacity>
 
-                    <View className="h-px bg-gray-400 mx-0 mb-3" />
+                    <View className="h-px bg-gray-400 mx-0 mb-3" /> */}
 
-                    {/* Buttons */}
+                    {/* Buttons
                     <TouchableOpacity
                         className="mb-3 p-4 border rounded-xl bg-red-100 self-start min-w-[270px]"
                         onPress={handleLogout}
                     >
-                        <Text className="text-black text-center text-xl font-semibold">Change Password</Text>
+                       <Text className="text-black text-center text-xl font-semibold">Change Password</Text>
                     </TouchableOpacity>
 
-                    <View className="h-px bg-gray-400 mx-0 mb-3" />
+                    <View className="h-px bg-gray-400 mx-0 mb-3" />*/}
 
                     <TouchableOpacity
-                        className="text-center p-4 border rounded-xl bg-red-200 self-start min-w-[270px]"
+                        className="text-center p-4 border rounded-xl bg-red-100 self-start min-w-[270px]"
                         onPress={handleLogout}
                     >
                         <Text className="text-black text-center text-xl font-semibold">Log out</Text>

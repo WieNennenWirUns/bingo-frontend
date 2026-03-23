@@ -1,58 +1,115 @@
-import React, { useState } from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    TextInput,
-    FlatList,
-} from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, FlatList, } from 'react-native';
 import { router } from 'expo-router';
 import {SafeAreaView} from "react-native-safe-area-context";
 import HomeHeaderFilter from "@/app/dropDown/HomeBingoFilter";
+import {getAccessToken} from "@/app/storage";
+import {getIP} from "@/app/_layout";
+import React, { useState, useEffect } from 'react';
+
 type Board = {
     id: string;
-    title: string;
+    name: string;
 };
 
-export default function HomeScreen() {
+// Fetch boards from backend when component mounts
+    export default function HomeScreen() {
+    // Friendcode states
     const [friendcodeOpen, setFriendcodeOpen] = useState(false);
     const [friendcode, setFriendcode] = useState('');
 
-    // später aus der DB laden – jetzt nur Platzhalter / leeres Array
-    const [boards] = useState<Board[]>([]);
-
     const toggleFriendcode = () => {
-        setFriendcodeOpen((prev) => !prev);
+        setFriendcodeOpen(prev => !prev);
+    };
+    // Boards state
+    const [boards, setBoards] = useState<Board[]>([]);
+
+
+    // Fetch boards on mount
+        useEffect(() => {
+            const fetchBoards = async () => {
+                try {
+                    const token = await getAccessToken();
+                    if (!token) return;
+                    const response = await fetch(`http://${getIP()}:3000/board`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    if (!response.ok) {
+                        console.log('Error fetching boards:', response.status, await response.text());
+                        return;
+                    }
+                    const data = await response.json();
+                    setBoards(data);
+                } catch (err) {
+                    console.error('Fetch boards failed:', err);
+                }
+            };
+            fetchBoards();
+        }, []);
+
+    // Add friend handler
+    const handleAddFriend = async () => {
+        const upperFriendcode = friendcode.trim().toUpperCase();
+        try {
+            const token = await getAccessToken();
+            if (!token) return;
+
+            const res = await fetch(`http://${getIP()}:3000/friends/request`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ friendcode:upperFriendcode }),
+            });
+
+            console.log(res);
+            const data = await res.json();
+            console.log(data);
+
+
+            if (!res.ok) {
+                const error = await res.json();
+                console.log(error.message);
+            }
+
+            console.log('Friend request response:', res.status);
+        } catch (err) {
+            console.error('Add friend failed:', err);
+        }
     };
 
-    const handleAddFriend = () => {
-        // TODO: hier später Request mit friendcode abschicken
-        console.log('Friendcode:', friendcode);
-    };
-
-    const handleGoToCreateGame = () => {
-        router.push('/createGame1');
-    };
-
-    const handleGoToProfile = () => {
-        router.push('/profile');
-    };
+    // Navigation handlers
+    const handleGoToCreateGame = () => router.push('/createGame1');
+    const handleGoToProfile = () => router.push('/profile');
 
     const renderBoard = ({ item }: { item: Board }) => (
-        <View className="w-full bg-white border border-gray-300 rounded-xl p-4 mb-3">
-            <Text className="text-lg font-semibold">{item.title}</Text>
-            {/* hier später weitere Infos wie Progress, aktives Datum usw. */}
-        </View>
-    );
+            <TouchableOpacity
+                className="w-full bg-white border border-gray-300 rounded-xl p-4 mb-3"
+                onPress={() =>
+                    router.push({
+                        pathname: '/bingoBoard',
+                        params: {
+                            gameId: item.id,        // real ID
+                            gameName: item.name,    // display name
+                            fields: JSON.stringify([]), // just an empty array
+                        },
+                    })
+                }
+            >
+                <Text className="text-lg font-semibold mb-2">{item.name}</Text>
+                <Text className="text-sm text-gray-500">Tap to view</Text>
+            </TouchableOpacity>
+        );
 
     return (
-        <SafeAreaView   className="flex-1 bg-white px-4 pb-4">
+        <SafeAreaView className="flex-1 bg-white px-4 pb-4">
             {/* Header: Filter + Name + Avatar */}
             <View className="flex-row items-center justify-between mt-2">
                 <HomeHeaderFilter />
-
                 <Text className="text-2xl font-semibold">Bingo Bear</Text>
-
                 <TouchableOpacity
                     className="w-10 h-10 rounded-full bg-gray-300 z-50"
                     onPress={handleGoToProfile}
@@ -68,7 +125,8 @@ export default function HomeScreen() {
                         </Text>
                     </View>
                 ) : (
-                    <FlatList //hier fehlt noch die beschreibung der Boards
+                    <FlatList
+                        //hier fehlt noch die beschreibung der Boards
                         data={boards}
                         keyExtractor={(item) => item.id}
                         renderItem={renderBoard}
@@ -85,18 +143,17 @@ export default function HomeScreen() {
                 />
 
                 <View className="flex-1 mx-3 bg-white border rounded-2xl py-2 px-4 items-center h-10 z-50">
-                    <TouchableOpacity //hier muss auch noch was passieren, damit der gesamte Button funktioniert und nicht nur die Schrift, habe darauf jetzt aber keinen Bock mehr
+                    <TouchableOpacity
+                        //hier muss auch noch was passieren, damit der gesamte Button funktioniert und nicht nur die Schrift, habe darauf jetzt aber keinen Bock mehr
                         onPress={toggleFriendcode}
                     >
                         <Text className="font-semibold text-center">Add Friends</Text>
                     </TouchableOpacity>
 
                     {friendcodeOpen && (
-                        //hier muss noch was g,acht werden, damit die box nicht von der Tastatur verdeckt wird><
+                        //hier muss noch was g,acht werden, damit die box nicht von der Tastatur verdeckt wird
                         <View className="absolute bottom-12 left-0 right-0 bg-white rounded-2xl px-4 py-3 shadow-lg z-50 border">
-                            <Text className="text-sm mb-1">
-                                nur XXXX-XXXX (Beispiel)
-                            </Text>
+                            <Text className="text-sm mb-1">nur XXX-XXX (Beispiel)</Text>
                             <TextInput
                                 className="w-full mt-1 mb-3 p-3 bg-white border border-gray-400 rounded-xl"
                                 placeholder="Enter Code"
