@@ -11,7 +11,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 export default function BingoBoard() {
     const { gameName, boardSize, fields } = useLocalSearchParams();
     const parsedFields: string[] = JSON.parse(fields as string);
-
     const size = parseInt(boardSize as string);
     const GRID_SIZE = 320;
     const CELL_SIZE = GRID_SIZE / size;
@@ -20,6 +19,7 @@ export default function BingoBoard() {
     const [completed, setCompleted] = useState<boolean[]>(
         new Array(parsedFields.length).fill(false)
     );
+
 
     const toggleDone = () => {
         if (selectedIndex === null) return;

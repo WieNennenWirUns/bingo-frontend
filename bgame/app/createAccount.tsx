@@ -6,7 +6,7 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,
     Platform,
-    ScrollView,
+    ScrollView, Alert,
 } from 'react-native';
 import { router } from 'expo-router';
 import {getIP} from "@/app/_layout";
@@ -41,7 +41,7 @@ export default function CreateAccountScreen() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    username: email, // oder separates Feld wenn du eins hast
+                    username: email,
                     email: email,
                     password: password,
                 }),
@@ -53,8 +53,10 @@ export default function CreateAccountScreen() {
                 throw new Error(data.message || 'Registration failed');
             }
 
-            // Erfolg → weiterleiten
-            router.replace('/home');
+            router.replace('/');
+            Alert.alert('Successfully registered', 'Please login now',
+                [{ text: 'OK' }]
+            );
 
         } catch (error) {
             console.error(error);
