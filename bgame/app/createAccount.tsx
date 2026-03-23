@@ -18,7 +18,7 @@ export default function CreateAccountScreen() {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const handleStart = async () => {
-        // Basic Validation
+
         if (email !== confirmEmail) {
             alert("Emails do not match");
             return;

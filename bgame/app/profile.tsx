@@ -38,10 +38,10 @@ export default function ProfileScreen() {
             }
 
             const data = await response.json();
-            const userEmail = data.email; // z.B. "user4@test.com"
+            const userEmail = data.email;
 
             if (userEmail) {
-                const username = userEmail.split('@')[0]; // "user4"
+                const username = userEmail.split('@')[0];
                 setDisplayName(username);
                 setEmail(userEmail);
             }

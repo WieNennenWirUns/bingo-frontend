@@ -39,7 +39,6 @@ export default function LoginScreen() {
             }
 
             const data = await response.json();
-            // data: { access_token, refresh_token }
 
             await AsyncStorage.setItem('access_token', data.access_token);
             await AsyncStorage.setItem('refresh_token', data.refresh_token);

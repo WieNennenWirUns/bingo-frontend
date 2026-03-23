@@ -15,7 +15,7 @@ type BoardSize = '3x3' | '4x4' | '5x5' | '6x6' | '7x7';
 
 export default function CreateGame1() {
     const [gameName, setGameName] = useState('');
-    const [selectedSize, setSelectedSize] = useState<BoardSize>('5x5'); // Default 5x5
+    const [selectedSize, setSelectedSize] = useState<BoardSize>('5x5');
 
     const boardSizes: BoardSize[] = ['3x3', '4x4', '5x5', '6x6', '7x7'];
 
@@ -25,7 +25,6 @@ export default function CreateGame1() {
             return;
         }
 
-        // Board-Größe mitnehmen zu createGame2
         router.push({
             pathname: '/createGame2',
             params: {
